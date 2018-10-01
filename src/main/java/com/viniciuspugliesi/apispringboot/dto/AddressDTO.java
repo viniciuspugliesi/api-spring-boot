@@ -2,7 +2,11 @@ package com.viniciuspugliesi.apispringboot.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.viniciuspugliesi.apispringboot.domain.Address;
 
 public class AddressDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,20 +25,21 @@ public class AddressDTO implements Serializable {
 	@NotEmpty(message="O CEP é obrigatório.")
 	private String cep;
 
-	@NotEmpty(message="A cidade é obrigatória.")
-	private Integer city_id;
+	@NotNull(message="A cidade é obrigatória.")
+	@Min(value=0L, message="A cidade é inválida.")
+	private Integer cityId;
 	
 	public AddressDTO() {
 	}
 
-	public AddressDTO(String street, String number, String complement, String district, String cep, Integer city_id) {
+	public AddressDTO(String street, String number, String complement, String district, String cep, Integer cityId) {
 		super();
 		this.street = street;
 		this.number = number;
 		this.complement = complement;
 		this.district = district;
 		this.cep = cep;
-		this.city_id = city_id;
+		this.cityId = cityId;
 	}
 
 	public String getStreet() {
@@ -78,31 +83,10 @@ public class AddressDTO implements Serializable {
 	}
 
 	public Integer getCityId() {
-		return city_id;
+		return cityId;
 	}
 
-	public void setCityId(Integer city_id) {
-		this.city_id = city_id;
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("AddressDTO [street=");
-		builder.append(street);
-		builder.append(", number=");
-		builder.append(number);
-		builder.append(", complement=");
-		builder.append(complement);
-		builder.append(", district=");
-		builder.append(district);
-		builder.append(", cep=");
-		builder.append(cep);
-		builder.append(", city_id=");
-		builder.append(city_id);
-		builder.append("]");
-		return builder.toString();
-	}
-	
-	
 }

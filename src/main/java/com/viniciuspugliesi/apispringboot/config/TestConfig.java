@@ -7,10 +7,4 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("test")
 public class TestConfig {
-
-	@Bean
-	public boolean test() {
-		System.out.println("Testando profile test");
-		return true;
-	}
 }

@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class UserCreateDTO implements Serializable {
+public class UserUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NotEmpty(message="O nome é obrigatório.")
@@ -28,10 +28,10 @@ public class UserCreateDTO implements Serializable {
     @Valid
 	private AddressDTO address;
 	
-	public UserCreateDTO() {
+	public UserUpdateDTO() {
 	}
 
-	public UserCreateDTO(String name, String email, String password, String cpf, String phone, AddressDTO address) {
+	public UserUpdateDTO(String name, String email, String password, String cpf, String phone, AddressDTO address) {
 		super();
 		this.name = name;
 		this.email = email;

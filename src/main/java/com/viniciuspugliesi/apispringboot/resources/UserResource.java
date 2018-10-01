@@ -20,7 +20,7 @@ public class UserResource {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="/create",method=RequestMethod.POST)
+	@RequestMapping(value="",method=RequestMethod.POST)
 	public ResponseEntity<User> create(@Valid @RequestBody UserCreateDTO userCreateDTO) {
 		User user = userService.create(userCreateDTO);
 		return ResponseEntity.ok().body(user);
