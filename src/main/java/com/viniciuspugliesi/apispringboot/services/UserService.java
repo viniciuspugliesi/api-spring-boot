@@ -10,6 +10,7 @@ import com.viniciuspugliesi.apispringboot.domain.City;
 import com.viniciuspugliesi.apispringboot.domain.User;
 import com.viniciuspugliesi.apispringboot.dto.AddressDTO;
 import com.viniciuspugliesi.apispringboot.dto.UserCreateDTO;
+import com.viniciuspugliesi.apispringboot.dto.UserUpdateDTO;
 import com.viniciuspugliesi.apispringboot.repositories.UserRepository;
 import com.viniciuspugliesi.apispringboot.services.exceptions.ObjectNotFountException;
 
@@ -35,6 +36,21 @@ public class UserService {
 	public User create(UserCreateDTO userCreateDTO) {
 		User user = createByDTO(userCreateDTO);
 		userRepository.save(user);
+		return user;
+	}
+	
+	public User update(Integer id, UserUpdateDTO userUpdateDTO) {
+		User user = findById(id);
+		fill(user, userUpdateDTO);
+		return user;
+	}
+	
+	protected User fill(User user, UserUpdateDTO userUpdateDTO) {
+		user.setEmail(userUpdateDTO.getEmail());
+		user.setCpf(userUpdateDTO.getCpf());
+		user.setName(userUpdateDTO.getName());
+		user.setPhone(userUpdateDTO.getPhone());
+		user.setPassword(userUpdateDTO.getPassword());
 		return user;
 	}
 
