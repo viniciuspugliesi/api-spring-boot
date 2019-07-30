@@ -3,7 +3,6 @@ package com.sistemagestaousuariosback.security;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sistemagestaousuariosback.domain.User;
 
 public class UserSecurity implements Serializable {
@@ -19,7 +18,6 @@ public class UserSecurity implements Serializable {
 
 	private Date passwordExpiresAt;
 	
-	@JsonIgnore
 	private String token;
 
 	private Date createdAt;
