@@ -3,8 +3,8 @@ package com.sistemagestaousuariosback.security;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.sistemagestaousuariosback.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sistemagestaousuariosback.domain.User;
 
 public class UserSecurity implements Serializable {
 	private static final long serialVersionUID = 3769952483316175243L;

@@ -10,6 +10,7 @@ import com.sistemagestaousuariosback.dto.LoginDTO;
 import com.sistemagestaousuariosback.mails.DeleteAccountMail;
 import com.sistemagestaousuariosback.repositories.UserRepository;
 import com.sistemagestaousuariosback.security.JWTAuthenticationFilter;
+import com.sistemagestaousuariosback.security.JWTAuthorizationFilter;
 import com.sistemagestaousuariosback.security.JWTUtil;
 import com.sistemagestaousuariosback.security.SecurityContext;
 import com.sistemagestaousuariosback.security.UserSecurity;
@@ -34,7 +35,19 @@ public class AuthService {
 	private TokenService tokenService;
 
 	@Autowired
+	private JWTAuthorizationFilter jwtAuthorizationFilter; 
+	
+	@Autowired
 	private JWTUtil jwtUtil;
+
+	public Boolean check(String token) {
+		try {
+			jwtAuthorizationFilter.getAuthentication(token);
+			return true;
+		} catch (UnauthorizedException e) {
+			return false;
+		}
+	}
 	
 	public UserSecurity login(LoginDTO loginDTO) {
 		User user = userRepository.findByEmail(loginDTO.getEmail());

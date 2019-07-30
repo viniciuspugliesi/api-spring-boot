@@ -40,7 +40,7 @@ public class JWTAuthorizationFilter {
 		SecurityContext.setUserSecurity(userSecurity);
 	}
 
-	private UserSecurity getAuthentication(String token) {
+	public UserSecurity getAuthentication(String token) {
 		if (! jwtUtil.tokenValid(token)) {
 			throw new UnauthorizedException("O Authorization Header é inválido.");
 		}

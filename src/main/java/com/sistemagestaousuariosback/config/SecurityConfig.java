@@ -2,6 +2,7 @@ package com.sistemagestaousuariosback.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,6 +16,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	private static final String[] PUBLIC_MATCHERS = { 
 		"/h2-console/**",
+		"/auth/check", 
 		"/auth/login", 
 		"/auth/forgot-password",
 		"/auth/reset-password", 
@@ -31,6 +33,12 @@ public class SecurityConfig implements WebMvcConfigurer {
 		registry.addInterceptor(authenticatedInterceptor)
 				.excludePathPatterns(PUBLIC_MATCHERS)
 				.addPathPatterns(AUTHENTICATED_MATCHERS);
+	}
+	
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+		WebMvcConfigurer.super.addCorsMappings(registry);
 	}
 	
 //	@Bean
