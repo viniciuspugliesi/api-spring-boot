@@ -2,7 +2,6 @@ package com.sistemagestaousuariosback.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -34,18 +33,4 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.excludePathPatterns(PUBLIC_MATCHERS)
 				.addPathPatterns(AUTHENTICATED_MATCHERS);
 	}
-	
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-        		.allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
-        		.allowedOrigins("http://localhost:4200");
-        
-		WebMvcConfigurer.super.addCorsMappings(registry);
-	}
-	
-//	@Bean
-//	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
 }

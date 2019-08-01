@@ -17,7 +17,7 @@ public class RegisterDTO implements Serializable {
 
 	@NotEmpty(message = "O email é obrigatório.")
 	@Email(message = "O email é inválido.")
-	@Unique(message = "O email não existe no sistema.", table = "users", collumn = "email", conditions = "deleted_at IS NULL")
+	@Unique(message = "O email já existe no sistema.", table = "users", collumn = "email", conditions = "deleted_at IS NULL")
 	private String email;
 
 	@NotEmpty(message = "A senha é obrigatória.")

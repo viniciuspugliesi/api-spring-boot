@@ -19,7 +19,10 @@ public class AuthenticatedInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		jwtAuthorizationFilter.doFilter(request, response, handler);		
+		if (! request.getMethod().equals("OPTIONS")) {
+			jwtAuthorizationFilter.doFilter(request, response, handler);	
+		}
+		
 		return true;
 	}
 }
