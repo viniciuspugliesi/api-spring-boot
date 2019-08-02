@@ -43,6 +43,10 @@ public class TokenService {
 		return tokenRepository.findByTokenAndType(token, TokenType.REGISTRATION.value());
 	}
 
+	public Token existsRecoverPassword(String token) {
+		return tokenRepository.findByTokenAndType(token, TokenType.RECOVER_PASSWORD.value());
+	}
+	
 	public void expiresAuthentication(UserSecurity userSecurity) {
 		Token token = tokenRepository.findByTokenAndTypeAndUserId(userSecurity.getToken(), TokenType.AUTHENTICATION.value(), userSecurity.getId());
 		tokenRepository.delete(token);

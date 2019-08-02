@@ -11,9 +11,9 @@ import com.sistemagestaousuariosback.mails.RegistrationMail;
 import com.sistemagestaousuariosback.repositories.UserRepository;
 import com.sistemagestaousuariosback.security.SecurityContext;
 import com.sistemagestaousuariosback.security.UserSecurity;
-import com.sistemagestaousuariosback.security.exception.UnauthorizedException;
 import com.sistemagestaousuariosback.services.TokenService;
 import com.sistemagestaousuariosback.services.email.EmailService;
+import com.sistemagestaousuariosback.services.exceptions.InvalidParameterException;
 import com.sistemagestaousuariosback.services.exceptions.MailException;
 import com.sistemagestaousuariosback.services.util.DateTimeUtil;
 
@@ -32,7 +32,7 @@ public class VerificationService {
 	public void verify(String token) {
 		Token userToken = tokenService.existsVerification(token);
 		if (userToken == null) {
-			throw new UnauthorizedException("O token não existe.");
+			throw new InvalidParameterException("token", "O token não existe.");
 		}
 		
 		User user = userToken.getUser();

@@ -17,6 +17,7 @@ import com.sistemagestaousuariosback.mails.ResetPasswordMail;
 import com.sistemagestaousuariosback.repositories.UserRepository;
 import com.sistemagestaousuariosback.services.TokenService;
 import com.sistemagestaousuariosback.services.email.EmailService;
+import com.sistemagestaousuariosback.services.exceptions.InvalidParameterException;
 import com.sistemagestaousuariosback.services.exceptions.MailException;
 import com.sistemagestaousuariosback.services.util.DateTimeUtil;
 
@@ -51,7 +52,13 @@ public class PasswordService {
 	}
 
 	public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
-		User user = userRepository.findByEmail(resetPasswordDTO.getEmail());
+		Token token = tokenService.existsRecoverPassword(resetPasswordDTO.getToken());
+		
+		if (token == null) {
+			throw new InvalidParameterException("token", "O token é inválido.");
+		}
+		
+		User user = token.getUser();
 
 		user.setPassword(bCrypt.encode(resetPasswordDTO.getPassword()));
 		user.setPasswordExpiresAt(DateTimeUtil.getDateWithAddDays(passwordExpiresAtDays));
