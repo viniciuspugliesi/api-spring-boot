@@ -1,4 +1,4 @@
-package com.sistemagestaousuariosback;
+package com.sgu;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SistemaGestaoUsuariosBackApplicationTests {
+public class sguApplicationTests {
 
 	@Test
 	public void contextLoads() {
