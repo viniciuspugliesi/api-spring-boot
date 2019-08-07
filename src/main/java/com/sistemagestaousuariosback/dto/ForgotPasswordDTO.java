@@ -10,8 +10,8 @@ import com.sistemagestaousuariosback.dto.annotations.Exists;
 public class ForgotPasswordDTO implements Serializable {
 	private static final long serialVersionUID = -7694123104324733090L;
 
-	@NotEmpty(message = "O email é obrigatório.")
 	@Email(message = "O email é inválido.")
+	@NotEmpty(message = "O email é obrigatório.")
 	@Exists(message = "O email não existe no sistema.", table = "users", collumn = "email", conditions = "deleted_at IS NULL")
 	private String email;
 
