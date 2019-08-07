@@ -35,6 +35,11 @@ public class TokenService {
 		return tokenRepository.save(token);
 	}
 
+	public Token createByNotificationInactiveAccount(User user) {
+		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.NotificationInactiveAccount, user);
+		return tokenRepository.save(token);
+	}
+
 	public boolean existsAuthentication(UserSecurity userSecurity) {
 		return tokenRepository.countByTokenAndTypeAndUserId(userSecurity.getToken(), TokenType.AUTHENTICATION.value(), userSecurity.getId()) > 0;
 	}

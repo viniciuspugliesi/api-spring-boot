@@ -6,7 +6,9 @@ public enum TokenType {
 	
 	RECOVER_PASSWORD(2, "Recuperar senha"),
 	
-	REGISTRATION(3, "Cadastro");
+	REGISTRATION(3, "Cadastro"), 
+	
+	NotificationInactiveAccount(4, "Notificação de conta inativa");
 
 	private final int value;
 

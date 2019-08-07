@@ -1,9 +1,12 @@
 package com.sgu.services;
 
 import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,8 @@ import com.sgu.dto.RegisterDTO;
 import com.sgu.dto.UserCreateDTO;
 import com.sgu.dto.UserSearchDTO;
 import com.sgu.dto.UserUpdateDTO;
+import com.sgu.mails.NotifyDeletedAccountMail;
+import com.sgu.mails.NotifyInactiveAccountMail;
 import com.sgu.mails.RegistrationMail;
 import com.sgu.repositories.UserRepository;
 import com.sgu.security.SecurityContext;
@@ -33,6 +38,7 @@ import com.sgu.services.util.PaginationUtil;
 
 @Service
 public class UserService {
+	public static Logger LOGGER = Logger.getLogger(UserService.class);
 
     @Value("${default.user.passwordExpiresAtDays}")
 	private Integer passwordExpiresAtDays;
@@ -126,5 +132,45 @@ public class UserService {
 		}
 		
 		userRepository.delete(user);
+	}
+
+	public void handlesInactiveAccountsEightDaysAgo() {
+		Date eightDaysAgo = DateTimeUtil.getDateWithAddDays(-8);
+		Date startDate = DateTimeUtil.clearTime(eightDaysAgo);
+		Date endDate = DateTimeUtil.maxTime(eightDaysAgo);
+		
+		List<User> users = userRepository.findAllByEmailVerifiedAtIsNullAndCreatedAtBetween(startDate, endDate);
+
+		for (User user : users){
+			Token token = tokenService.createByNotificationInactiveAccount(user);
+
+			try {
+				LOGGER.info("Notificando o usuário de conta inativa há 8 dias: " + user.getName());
+				emailService.send(new NotifyInactiveAccountMail(user, token));
+			} catch (MessagingException e) {
+				throw new MailException(e);
+			}
+		}
+	}
+
+	public void handlesInactiveAccountsTenDaysAgo() {
+		Date tenDaysAgo = DateTimeUtil.getDateWithAddDays(-10);
+		Date startDate = DateTimeUtil.clearTime(tenDaysAgo);
+		Date endDate = DateTimeUtil.maxTime(tenDaysAgo);
+		
+		List<User> users = userRepository.findAllByEmailVerifiedAtIsNullAndCreatedAtBetween(startDate, endDate);
+
+		for (User user : users){
+			Token token = tokenService.createByNotificationInactiveAccount(user);
+
+			try {
+				LOGGER.info("Notificando o usuário de conta que foi excluída: " + user.getName());
+				emailService.send(new NotifyDeletedAccountMail(user, token));
+			} catch (MessagingException e) {
+				throw new MailException(e);
+			} finally {
+				userRepository.delete(user);
+			}
+		}
 	}
 }
