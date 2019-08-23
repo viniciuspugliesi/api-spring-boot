@@ -16,11 +16,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "profiles")
-@SQLDelete(sql = "UPDATE profiles SET deleted_at = current_timestamp() WHERE id = ?")
+@Table(name = "policies")
+@SQLDelete(sql = "UPDATE policies SET deleted_at = current_timestamp() WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
-public class Profile implements Serializable {
-	private static final long serialVersionUID = 7673104771803006323L;
+public class Policy implements Serializable {
+	private static final long serialVersionUID = 5247689982349674117L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,13 +43,19 @@ public class Profile implements Serializable {
 	@Column(nullable = true)
 	private Date deletedAt;
 
-	public Profile() {
+	public Policy() {
 		
 	}
 
-	public Profile(Integer id, String name, String description) {
+	public Policy(Integer id, String name, String description) {
 		super();
 		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
+
+	public Policy(String name, String description) {
+		super();
 		this.name = name;
 		this.description = description;
 	}
@@ -118,7 +124,7 @@ public class Profile implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Profile other = (Profile) obj;
+		Policy other = (Policy) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

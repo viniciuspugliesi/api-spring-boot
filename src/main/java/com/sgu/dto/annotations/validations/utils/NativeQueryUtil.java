@@ -19,20 +19,21 @@ public class NativeQueryUtil {
 	public List<?> queryBuilder(String table, String collumn, String value, String conditions) {
 		String sql = "SELECT " + collumn + " FROM " + table + " WHERE " + collumn + " = '" + value + "'";
 		
-		conditions(sql, conditions);
+		sql = conditions(sql, conditions);
 		
 		return entityManager.createNativeQuery(sql).getResultList();
 	}
 	
-	private void conditions(String sql, String conditions) {
+	private String conditions(String sql, String conditions) {
 		if (conditions == null || conditions.isEmpty()) {
-			return;
+			return sql;
 		}
 		
 		if (! conditions.matches(".*\\$\\{[a-zA-Z]*\\}.*")) {
 			sql += " AND " + conditions;
-			return;
 		}
+		
+		return sql;
 		
 
 //		ResetPasswordDTO resetPasswordDTO = (ResetPasswordDTO) InputReaderUtil.getInput();

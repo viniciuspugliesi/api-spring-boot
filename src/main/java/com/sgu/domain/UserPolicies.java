@@ -18,23 +18,23 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "profile_roles")
-@SQLDelete(sql = "UPDATE user_roles SET deleted_at = current_timestamp() WHERE id = ?")
+@Table(name = "user_policies")
+@SQLDelete(sql = "UPDATE user_policies SET deleted_at = current_timestamp() WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
-public class ProfileRole implements Serializable {
-	private static final long serialVersionUID = -2978330803126414514L;
+public class UserPolicies implements Serializable {
+	private static final long serialVersionUID = 795791938646856434L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "role_id")
-	private Role role;
+	@JoinColumn(name = "policy_id")
+	private Policy policy;
 
 	@ManyToOne
-	@JoinColumn(name = "profile_id")
-	private Profile profile;
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@CreationTimestamp
 	@Column(nullable = false)
@@ -47,15 +47,21 @@ public class ProfileRole implements Serializable {
 	@Column(nullable = true)
 	private Date deletedAt;
 
-	public ProfileRole() {
+	public UserPolicies() {
 		
 	}
 
-	public ProfileRole(Integer id, Role role, Profile profile) {
+	public UserPolicies(Integer id, Policy policy, User user) {
 		super();
 		this.id = id;
-		this.role = role;
-		this.profile = profile;
+		this.policy = policy;
+		this.user = user;
+	}
+
+	public UserPolicies(Policy policy, User user) {
+		super();
+		this.policy = policy;
+		this.user = user;
 	}
 
 	public Integer getId() {
@@ -66,20 +72,20 @@ public class ProfileRole implements Serializable {
 		this.id = id;
 	}
 
-	public Role getRole() {
-		return role;
+	public Policy getPolicy() {
+		return policy;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setPolicy(Policy policy) {
+		this.policy = policy;
 	}
 
-	public Profile getProfile() {
-		return profile;
+	public User getUser() {
+		return user;
 	}
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getCreatedAt() {
@@ -110,7 +116,12 @@ public class ProfileRole implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
+		result = prime * result + ((deletedAt == null) ? 0 : deletedAt.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((policy == null) ? 0 : policy.hashCode());
+		result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -122,11 +133,36 @@ public class ProfileRole implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProfileRole other = (ProfileRole) obj;
+		UserPolicies other = (UserPolicies) obj;
+		if (createdAt == null) {
+			if (other.createdAt != null)
+				return false;
+		} else if (!createdAt.equals(other.createdAt))
+			return false;
+		if (deletedAt == null) {
+			if (other.deletedAt != null)
+				return false;
+		} else if (!deletedAt.equals(other.deletedAt))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (policy == null) {
+			if (other.policy != null)
+				return false;
+		} else if (!policy.equals(other.policy))
+			return false;
+		if (updatedAt == null) {
+			if (other.updatedAt != null)
+				return false;
+		} else if (!updatedAt.equals(other.updatedAt))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}

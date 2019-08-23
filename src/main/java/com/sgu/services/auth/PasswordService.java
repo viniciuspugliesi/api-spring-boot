@@ -1,5 +1,7 @@
 package com.sgu.services.auth;
 
+import java.util.Date;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,14 @@ import org.springframework.stereotype.Service;
 import com.sgu.domain.Token;
 import com.sgu.domain.User;
 import com.sgu.dto.ForgotPasswordDTO;
+import com.sgu.dto.PasswordExpiredDTO;
 import com.sgu.dto.ResetPasswordDTO;
 import com.sgu.mails.ForgotPasswordMail;
 import com.sgu.mails.ResetPasswordMail;
 import com.sgu.repositories.UserRepository;
+import com.sgu.security.SecurityContext;
+import com.sgu.security.UserSecurity;
+import com.sgu.security.exception.UnauthorizedException;
 import com.sgu.services.TokenService;
 import com.sgu.services.email.EmailService;
 import com.sgu.services.exceptions.InvalidParameterException;
@@ -70,5 +76,23 @@ public class PasswordService {
 		} catch (MessagingException e) {
 			throw new MailException(e);
 		}
+	}
+
+	public User passwordExpired(PasswordExpiredDTO passwordExpiredDTO) {
+		UserSecurity userSecurity = SecurityContext.getUserSecurity();
+		User user = userRepository.findByEmail(userSecurity.getEmail());
+		
+		if (!passwordExpired(user)) {
+			throw new UnauthorizedException("A senha ainda não expirou para ser alterada desse modo.");
+		}
+
+		user.setPassword(bCrypt.encode(passwordExpiredDTO.getPassword()));
+		user.setPasswordExpiresAt(DateTimeUtil.getDateWithAddDays(passwordExpiresAtDays));
+		userRepository.save(user);
+		return user;
+	}
+	
+	private Boolean passwordExpired(User user) {
+		return user.getPasswordExpiresAt().before(new Date());
 	}
 }

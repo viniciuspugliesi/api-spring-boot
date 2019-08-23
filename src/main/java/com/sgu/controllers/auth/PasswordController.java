@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sgu.domain.User;
 import com.sgu.dto.ForgotPasswordDTO;
+import com.sgu.dto.PasswordExpiredDTO;
 import com.sgu.dto.ResetPasswordDTO;
+import com.sgu.dto.UserDTO;
 import com.sgu.services.auth.PasswordService;
 
 @RestController
@@ -30,5 +33,11 @@ public class PasswordController {
 	public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
 		passwordService.resetPassword(resetPasswordDTO);
 		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value = "/password-expired", method = RequestMethod.POST)
+	public ResponseEntity<UserDTO> passwordExpired(@Valid @RequestBody PasswordExpiredDTO passwordExpiredDTO) {
+		User user = passwordService.passwordExpired(passwordExpiredDTO);
+		return ResponseEntity.ok(new UserDTO(user));
 	}
 }
